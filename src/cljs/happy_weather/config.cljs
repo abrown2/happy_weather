@@ -1,4 +1,4 @@
-(ns happy-weather-temp.config)
+(ns happy-weather.config)
 
 (def debug?
   ^boolean goog.DEBUG)

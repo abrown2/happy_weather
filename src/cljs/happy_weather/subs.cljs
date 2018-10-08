@@ -1,4 +1,4 @@
-(ns happy-weather-temp.subs
+(ns happy-weather.subs
   (:require
    [re-frame.core :as re-frame]))
 

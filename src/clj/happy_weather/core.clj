@@ -1,1 +1,1 @@
-(ns happy-weather-temp.core)
+(ns happy-weather.core)

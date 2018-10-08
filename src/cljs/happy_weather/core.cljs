@@ -1,11 +1,11 @@
-(ns happy-weather-temp.core
+(ns happy-weather.core
   (:require
    [reagent.core :as reagent]
    [re-frame.core :as re-frame]
-   [happy-weather-temp.events :as events]
-   [happy-weather-temp.views :as views]
-   [happy-weather-temp.config :as config]
-   ))
+   [happy-weather.events :as events]
+   [happy-weather.views :as views]
+   [happy-weather.config :as config]))
+
 
 
 (defn dev-setup []

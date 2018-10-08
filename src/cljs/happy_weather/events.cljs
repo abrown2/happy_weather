@@ -1,8 +1,8 @@
-(ns happy-weather-temp.events
+(ns happy-weather.events
   (:require
    [re-frame.core :as re-frame]
-   [happy-weather-temp.db :as db]
-   ))
+   [happy-weather.db :as db]))
+
 
 (re-frame/reg-event-db
  ::initialize-db
