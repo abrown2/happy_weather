@@ -6,3 +6,8 @@
  ::name
  (fn [db]
    (:name db)))
+
+(re-frame/reg-sub
+  ::wind-direction
+  (fn [db]
+    (:wind-direction db)))

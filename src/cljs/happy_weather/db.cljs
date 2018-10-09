@@ -1,4 +1,5 @@
 (ns happy-weather.db)
 
 (def default-db
-  {:name "re-frame"})
+  {:name "re-frame"
+   :wind-direction 110})
