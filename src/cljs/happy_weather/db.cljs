@@ -2,4 +2,5 @@
 
 (def default-db
   {:name "re-frame"
-   :wind-direction 110})
+   :wind-direction 110
+   :locations "under construction"})

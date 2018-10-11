@@ -11,3 +11,8 @@
   ::wind-direction
   (fn [db]
     (:wind-direction db)))
+
+(re-frame/reg-sub
+  ::locations
+  (fn [db]
+    (:locations db)))
