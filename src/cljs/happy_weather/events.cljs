@@ -31,4 +31,4 @@
 (re-frame/reg-event-db
   :handle-location-retrieve-success
   (fn [db [_ response]]
-    (assoc db :locations response)))
+    (assoc db :locations (:Locations response))))

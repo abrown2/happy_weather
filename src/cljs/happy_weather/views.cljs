@@ -23,11 +23,12 @@
             :value @(re-frame/subscribe [::subs/wind-direction])
             :on-change #(re-frame/dispatch [:wind-direction-change (-> % .-target .-value)])}]])
 
-(defn locations[app-state]
+(defn location-list []
   (let [locations  @(re-frame/subscribe [::subs/locations])]
-    [:div
-      [:p "isMap=" (if (map? locations) "true" "false")]
-      [:p "locs: " (first (:Location locations))]]))
+    [:ul
+     (for [location  (:Location locations)]
+      [:li "id: " (:id location) "; name:" (:name location)])]))
+
 
 (defn main-panel []
   (let [name (re-frame/subscribe [::subs/name])]
@@ -37,4 +38,4 @@
      [wind-direction-input]
      [:p]
      [get-location-button]
-     [locations]]))
+     [location-list]]))
