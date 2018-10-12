@@ -3,12 +3,6 @@
    [re-frame.core :as re-frame]
    [happy-weather.subs :as subs]))
 
-(defn get-location-button2
-  []
-  [:div {:class "button-class"
-         :on-click  #(re-frame/dispatch [:location-retrieve])}  ;; get data from the server !!
-        "Get Locations"])
-
 (defn get-location-button
   []
   [:div
@@ -18,7 +12,6 @@
 
 (defn wind-direction [app-state]
   (let [wind-direction (re-frame/subscribe [::subs/wind-direction])]
-  ;;(let [wind-direction 123]
     [:div
       [:p "wind-direction=" @wind-direction]]))
 
@@ -31,10 +24,10 @@
             :on-change #(re-frame/dispatch [:wind-direction-change (-> % .-target .-value)])}]])
 
 (defn locations[app-state]
-  (let [locations (re-frame/subscribe [::subs/locations])]
-  ;;(let [wind-direction 123]
+  (let [locations  @(re-frame/subscribe [::subs/locations])]
     [:div
-      [:p "locations=" @locations]]))
+      [:p "isMap=" (if (map? locations) "true" "false")]
+      [:p "locs: " (first (:Location locations))]]))
 
 (defn main-panel []
   (let [name (re-frame/subscribe [::subs/name])]
@@ -42,5 +35,6 @@
      [:h1 "Hello from " @name]
      [wind-direction]
      [wind-direction-input]
+     [:p]
      [get-location-button]
      [locations]]))

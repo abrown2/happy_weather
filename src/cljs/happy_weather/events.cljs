@@ -23,12 +23,12 @@
      :http-xhrio {:method          :get
                   :uri             "http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/sitelist?"
                   :params          {:key "aeb6de8c-b9b7-4a94-a990-d0124810511a"}
-                  :timeout         8000                                           ;; optional see API docs
-                  :response-format (ajax/json-response-format {:keywords? true})  ;; IMPORTANT!: You must provide this.
+                  :timeout         8000
+                  :response-format (ajax/json-response-format {:keywords? true})
                   :on-success      [:handle-location-retrieve-success]
                   :on-failure      [:handle-location-retrieve-failure]}}))
 
 (re-frame/reg-event-db
   :handle-location-retrieve-success
-  (fn [db [_ locations]]
-    (assoc db :locations locations)))
+  (fn [db [_ response]]
+    (assoc db :locations response)))
