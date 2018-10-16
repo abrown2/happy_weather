@@ -1,7 +1,9 @@
 (ns happy-weather.views
   (:require
    [re-frame.core :as re-frame]
-   [happy-weather.subs :as subs]))
+   [reagent.core :as reagent]
+   [happy-weather.subs :as subs]
+   [cljsjs.spin :as spin]))
 
 (defn get-location-button
   []
@@ -28,6 +30,12 @@
     [:ul
      (for [location  (:Location locations)]
       [:li "id: " (:id location) "; name:" (:name location)])]))
+
+;;(defn spinner []
+;;  (let [spinner (aget js/window "Spinner")]
+;;   [(reagent/adapt-react-class spinner)
+;;    (js-obj lines: 99)))    ;; need a js object as spinner mutates it
+
 
 
 (defn main-panel []

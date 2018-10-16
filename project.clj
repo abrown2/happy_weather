@@ -3,7 +3,8 @@
                  [org.clojure/clojurescript "1.10.238"]
                  [reagent "0.7.0"]
                  [re-frame "0.10.5"]
-                 [day8.re-frame/http-fx "0.1.6"]]
+                 [day8.re-frame/http-fx "0.1.6"]
+                 [cljsjs/spin "2.3.2-0"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]]
 
