@@ -27,9 +27,9 @@
 
 (defn location-list []
   (let [locations  @(re-frame/subscribe [::subs/locations])]
-    [:ul
+    [:ul#loc-list
      (for [location  (:Location locations)]
-      [:li "id: " (:id location) "; name:" (:name location)])]))
+      [:li#loc-list "id: " (:id location) "; name:" (:name location)])]))
 
 ;;(defn spinner []
 ;;  (let [spinner (aget js/window "Spinner")]
