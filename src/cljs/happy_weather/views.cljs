@@ -3,7 +3,12 @@
    [re-frame.core :as re-frame]
    [reagent.core :as reagent]
    [happy-weather.subs :as subs]
-   [cljsjs.spin :as spin]))
+   [cljsjs.spin :as spin]
+   [cljsjs.react :as react]
+   [cljsjs.react.dom :as r-dom]
+   [cljsjs.react-pose :as pose]))
+
+
 
 (defn get-location-button
   []

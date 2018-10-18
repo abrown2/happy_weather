@@ -1,10 +1,16 @@
 (defproject happy-weather "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.10.238"]
+                 [org.clojure/clojurescript "1.10.339"]
                  [reagent "0.7.0"]
                  [re-frame "0.10.5"]
+                 [cljsjs/react "16.5.2-0"]
+                 [cljsjs/react-dom "16.5.2-0"]
                  [day8.re-frame/http-fx "0.1.6"]
-                 [cljsjs/spin "2.3.2-0"]]
+                 [cljsjs/spin "2.3.2-0"]
+                 [lein-cljsbuild "1.1.7"]
+                 [cljsjs/react-pose "1.6.4-0"]]
+
+
 
   :plugins [[lein-cljsbuild "1.1.7"]]
 
