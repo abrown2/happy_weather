@@ -41,6 +41,11 @@
 ;;   [(reagent/adapt-react-class spinner)
 ;;    (js-obj lines: 99)))    ;; need a js object as spinner mutates it
 
+(defn box []
+  ;;  [(reagent/adapt-react-class spinner)]
+  [(reagent/adapt-react-class (.div js/posed {:visible { :opacity 1} :hidden { :opacity 0}}))])
+
+
 
 
 (defn main-panel []
@@ -49,6 +54,7 @@
      [:h1 "Hello from " @name]
      [wind-direction]
      [wind-direction-input]
+    ;; [box]
      [:p]
      [get-location-button]
      [location-list]]))
