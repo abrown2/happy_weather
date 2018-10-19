@@ -8,7 +8,8 @@
                  [day8.re-frame/http-fx "0.1.6"]
                  [cljsjs/spin "2.3.2-0"]
                  [lein-cljsbuild "1.1.7"]
-                 [cljsjs/react-pose "1.6.4-0"]]
+                 [cljsjs/react-pose "1.6.4-0"]
+                 [reanimated "0.6.1"]]
 
 
 

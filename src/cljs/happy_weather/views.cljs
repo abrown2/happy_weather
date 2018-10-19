@@ -6,7 +6,8 @@
    [cljsjs.spin :as spin]
    [cljsjs.react :as react]
    [cljsjs.react.dom :as r-dom]
-   [cljsjs.react-pose :as pose]))
+   [cljsjs.react-pose :as pose]
+   [reanimated.core :as anim]))
 
 
 
@@ -41,20 +42,38 @@
 ;;   [(reagent/adapt-react-class spinner)
 ;;    (js-obj lines: 99)))    ;; need a js object as spinner mutates it
 
-(defn box []
-  ;;  [(reagent/adapt-react-class spinner)]
-  [(reagent/adapt-react-class (.div js/posed {:visible { :opacity 1} :hidden { :opacity 0}}))])
 
-
+(defn cloud-cartoon []
+  (let [tilt (reagent/atom 0)
+        rotation (anim/spring tilt)
+        flip (reagent/atom 90)
+        scale (anim/spring flip)
+        size (reagent/atom 0)
+        width (anim/spring size)]
+    (fn a-logo-component []
+      [:div
+       [anim/interval #(reset! size 100) 300]
+       [:img
+        {:src "img/cloud-cartoon-med.png"
+         :width (str @width "px")
+         :style (zipmap [:-ms-transform
+                         :-moz-transform
+                         :-webkit-transform
+                         :transform]
+                        (repeat (str "rotate(" @rotation "deg) rotateY(" (+ 90 @scale) "deg)")))
+         :on-mouse-over (fn logo-mouseover [e]
+                          (reset! tilt 15))
+         :on-mouse-out (fn logo-mouseout [e]
+                         (reset! tilt 0))}]])))
 
 
 (defn main-panel []
   (let [name (re-frame/subscribe [::subs/name])]
     [:div
-     [:h1 "Hello from " @name]
      [wind-direction]
      [wind-direction-input]
-    ;; [box]
+     [:p]
+     [cloud-cartoon]
      [:p]
      [get-location-button]
      [location-list]]))
