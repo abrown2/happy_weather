@@ -7,8 +7,8 @@
    [cljsjs.react :as react]
    [cljsjs.react.dom :as r-dom]
    [cljsjs.react-pose :as pose]
+   [reagent.ratom :as ratom]
    [reanimated.core :as anim]))
-
 
 
 (defn get-location-button
@@ -66,12 +66,68 @@
          :on-mouse-out (fn logo-mouseout [e]
                          (reset! tilt 0))}]])))
 
+(defn bike-component [bike]
+  (let [ba (reagent/atom bike)
+        xa (ratom/reaction (:x @ba))
+        x (anim/interpolate-to xa {:duration 1000})]
+    (fn [{:keys [color y size] :as bike}]
+      (reset! ba bike)
+      [:g
+       {:transform (str "translate(" @x " " y ")")}
+       [:circle
+        {:r size
+         :cx 20 :cy 20
+         :fill color}]
+       [:circle
+        {:r size
+         :cx 40 :cy 20
+         :fill color}]
+       [:path
+        {:stroke color
+         :fill "none"
+         :d "M25 10 L35 10 L40 20 L30 20 L25 10
+              M20 20 L30 0
+              M30 20 L40 5"}]])))
+
+(defn one-bike [{:keys [dx] :as bike}]
+  (update bike :x (fn [x]
+                    (-> (+ x dx)
+                        (mod 500)))))
+
+(defn bike-step [bikes]
+  (into bikes
+        (for [[k v] bikes]
+          ;; TODO: make more interesting, bigger steps, spinning wheels
+          [k (one-bike v)])))
+
+(defn new-bike []
+  {:size (+ 5 (rand-int 3))
+   :dx (* (rand-nth [1 -1])
+          (+ 5 (rand-int 15)))
+   :color (rand-nth ["red" "green" "blue" "gold"])
+   :x (rand-int 500)
+   :y (rand-int 100)})
+
+(defn bikes[]
+  (let [app-state (reagent/atom
+                    {:bikes (zipmap (repeatedly gensym)
+                                    (repeatedly 5 new-bike))})]
+    (fn a-react-to-value-example-component []
+      [:svg
+       {:width 560
+        :height 120}
+       [anim/interval #(swap! app-state update :bikes bike-step) 1000]
+       (for [[k v] (:bikes @app-state)]
+         ^{:key k}
+         [bike-component v])])))
 
 (defn main-panel []
   (let [name (re-frame/subscribe [::subs/name])]
     [:div
      [wind-direction]
      [wind-direction-input]
+     [:p]
+     [bikes]
      [:p]
      [cloud-cartoon]
      [:p]
