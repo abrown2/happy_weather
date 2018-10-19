@@ -73,7 +73,7 @@
     (fn [{:keys [color y size] :as bike}]
       (reset! ba bike)
       [:g
-       {:transform (str "translate(" @x " " y ")")}
+       {:transform (str "translate(" @x " " (str (+ y (rand-int 23))) ")")}
        [:circle
         {:r size
          :cx 20 :cy 20
@@ -101,7 +101,7 @@
           [k (one-bike v)])))
 
 (defn new-bike []
-  {:size (+ 5 (rand-int 3))
+  {:size (+ 5 (rand-int 23))
    :dx (* (rand-nth [1 -1])
           (+ 5 (rand-int 15)))
    :color (rand-nth ["red" "green" "blue" "gold"])
@@ -111,12 +111,12 @@
 (defn bikes[]
   (let [app-state (reagent/atom
                     {:bikes (zipmap (repeatedly gensym)
-                                    (repeatedly 5 new-bike))})]
+                                    (repeatedly 10 new-bike))})]
     (fn a-react-to-value-example-component []
       [:svg
        {:width 560
         :height 120}
-       [anim/interval #(swap! app-state update :bikes bike-step) 1000]
+       [anim/interval #(swap! app-state update :bikes bike-step) 5000]
        (for [[k v] (:bikes @app-state)]
          ^{:key k}
          [bike-component v])])))
