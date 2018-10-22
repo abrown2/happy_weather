@@ -97,7 +97,6 @@
 (defn bike-step [bikes]
   (into bikes
         (for [[k v] bikes]
-          ;; TODO: make more interesting, bigger steps, spinning wheels
           [k (one-bike v)])))
 
 (defn new-bike []
@@ -121,15 +120,43 @@
          ^{:key k}
          [bike-component v])])))
 
+
+(defn orbit
+  [x]
+  (do (.log js/console (str "x=" (+ x 10)))
+      (+ x 20)))
+
+(defn sun-cmpt[]
+  (let [sun-pos (reagent/atom {:x 20 :y 0})
+        x-pos (ratom/reaction (:x @sun-pos))
+        x (anim/interpolate-to x-pos {:duration 3000})]
+   (fn create-sun []
+      ;;(reset! sun-pos {:x 20 :y 0})
+      [:svg
+       {:width 560
+        :height 320}
+       [anim/interval #(swap! sun-pos update :x orbit) 3000]
+       [:g
+        {:transform (str "translate(" @x " " 50 ")")}
+        [:circle
+         {:r 30
+          :cx 20 :cy 20
+          :fill "gold"}]]])))
+    ;;   [sun-svg]])
+
+
+
+
 (defn main-panel []
   (let [name (re-frame/subscribe [::subs/name])]
     [:div
      [wind-direction]
      [wind-direction-input]
      [:p]
-     [bikes]
+     [sun-cmpt]
+     ;;[bikes]
      [:p]
      [cloud-cartoon]
-     [:p]
-     [get-location-button]
-     [location-list]]))
+     [:p]]))
+    ;; [get-location-button]
+    ;; [location-list]]))
