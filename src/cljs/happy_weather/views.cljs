@@ -119,28 +119,42 @@
        (for [[k v] (:bikes @app-state)]
          ^{:key k}
          [bike-component v])])))
+(defn add-offset
+  [z]
+  (+ z 140))
+
+(defn calc-x
+  [r deg]
+  (add-offset (*  r (Math/cos (* 0.01745 deg)))))
+
+(defn calc-y
+  [r deg]
+  (add-offset (*  r (Math/sin (* 0.01745 deg)))))
 
 
 (defn orbit
-  [x]
-  (do (.log js/console (str "x=" (+ x 10)))
-      (+ x 20)))
+  [{:keys [x y r deg] :as sun-pos}]
+  (do (.log js/console (str "x=" x " y=" y " deg=" deg " r=" r))
+      (let [new-deg (+ deg 10)]
+        (into sun-pos {:x (calc-x r new-deg) :y (calc-y r new-deg) :r r :deg new-deg}))))
 
 (defn sun-cmpt[]
-  (let [sun-pos (reagent/atom {:x 20 :y 0})
-        x-pos (ratom/reaction (:x @sun-pos))
-        x (anim/interpolate-to x-pos {:duration 3000})]
+  (let [sun-pos (reagent/atom {:sun-pos {:x 20 :y 0 :deg 0 :r 140}})
+        x-pos (ratom/reaction (:x (:sun-pos @sun-pos)))
+        x (anim/interpolate-to x-pos {:duration 1000})
+        y-pos (ratom/reaction (:y (:sun-pos @sun-pos)))
+        y (anim/interpolate-to y-pos {:duration 1000})]
    (fn create-sun []
       ;;(reset! sun-pos {:x 20 :y 0})
       [:svg
        {:width 560
         :height 320}
-       [anim/interval #(swap! sun-pos update :x orbit) 3000]
+       [anim/interval #(swap! sun-pos update :sun-pos orbit) 1000]
        [:g
-        {:transform (str "translate(" @x " " 50 ")")}
+        {:transform (str "translate(" @x " " @y ")")}
         [:circle
          {:r 30
-          :cx 20 :cy 20
+          :cx 120 :cy 120
           :fill "gold"}]]])))
     ;;   [sun-svg]])
 
