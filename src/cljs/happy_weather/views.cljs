@@ -90,22 +90,24 @@
     [:line
       {:x1 0 :y1 0 :x2 700 :y2 0 :style {:stroke "rgb(0,0,0)" :stroke-width "4"}}]]])
 
+(def time-data (reagent/atom {:day 3}))
 
-(defn slider2 [app-state param value min max]
+(defn get-day []
+  (:day @time-data))
+
+(defn slider2 [param value min max]
   [:input {:type "range" :value value :min min :max max
            :style {:width "100%"}
            :on-change (fn [e]
-                        ;;(swap! app-state assoc param (.. e -target -value))
-                        (swap! app-state assoc :day 400))}])
-
+                         (swap! time-data assoc param (.. e -target -value)))}])
 
 
 (defn time-control []
-  (let [app-state (reagent/atom {:day 200})
-        day (:day @app-state)]
+;;  (let [app-state (reagent/atom {:day 200})
+  ;;      day (:day @app-state)
     [:div
-      "Day: " (int day)
-      [slider2 app-state :day day 1 600]]))
+      "Day: " (int (get-day))
+      [slider2  :day (get-day) 1 600]])
 
 
 (def bmi-data (reagent/atom {:height 180 :weight 80}))
@@ -117,33 +119,30 @@
       (assoc data :bmi (/ weight (* h h)))
       (assoc data :weight (* bmi h h)))))
 
+
 (defn slider [param value min max]
   [:input {:type "range" :value value :min min :max max
            :style {:width "100%"}
            :on-change (fn [e]
-                        (swap! bmi-data assoc param (.. e -target -value))
-                        (when (not= param :bmi)
-                          (swap! bmi-data assoc :bmi nil)))}])
-
-
-
+                        (swap! bmi-data assoc param (.. e -target -value)))}])
 
 
 (defn main-panel []
   (let [name (re-frame/subscribe [::subs/name])
-        {:keys [weight height bmi]} (calc-bmi)]
+        {:keys [weight height bmi]} (calc-bmi)
+        {:keys [day]} (get-day)]
+    [:div
 
-
-     [wind-direction]
-     [wind-direction-input]
+      [wind-direction]
+      [wind-direction-input]
     ;; [sun-cmpt]
-     [horizon]
+      [horizon]
     ;; [cloud-cartoon]
-    ;; [time-control]
+      [time-control]
     ;; [get-location-button]
     ;; [location-list]]))
 
-     [:div
+  ;;  [:div
       [:h3 "BMI calculator"]
       [:div
        "Height: " (int height) "cm"
