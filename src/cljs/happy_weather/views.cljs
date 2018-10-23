@@ -3,6 +3,7 @@
    [re-frame.core :as re-frame]
    [reagent.core :as reagent]
    [happy-weather.subs :as subs]
+   [happy-weather.orbit :as orbit]
    [cljsjs.spin :as spin]
    [cljsjs.react :as react]
    [cljsjs.react.dom :as r-dom]
@@ -37,11 +38,6 @@
      (for [location  (:Location locations)]
       [:li#loc-list "id: " (:id location) "; name:" (:name location)])]))
 
-;;(defn spinner []
-;;  (let [spinner (aget js/window "Spinner")]
-;;   [(reagent/adapt-react-class spinner)
-;;    (js-obj lines: 99)))    ;; need a js object as spinner mutates it
-
 
 (defn cloud-cartoon []
   (let [tilt (reagent/atom 0)
@@ -66,95 +62,24 @@
          :on-mouse-out (fn logo-mouseout [e]
                          (reset! tilt 0))}]])))
 
-(defn bike-component [bike]
-  (let [ba (reagent/atom bike)
-        xa (ratom/reaction (:x @ba))
-        x (anim/interpolate-to xa {:duration 1000})]
-    (fn [{:keys [color y size] :as bike}]
-      (reset! ba bike)
-      [:g
-       {:transform (str "translate(" @x " " (str (+ y (rand-int 23))) ")")}
-       [:circle
-        {:r size
-         :cx 20 :cy 20
-         :fill color}]
-       [:circle
-        {:r size
-         :cx 40 :cy 20
-         :fill color}]
-       [:path
-        {:stroke color
-         :fill "none"
-         :d "M25 10 L35 10 L40 20 L30 20 L25 10
-              M20 20 L30 0
-              M30 20 L40 5"}]])))
-
-(defn one-bike [{:keys [dx] :as bike}]
-  (update bike :x (fn [x]
-                    (-> (+ x dx)
-                        (mod 500)))))
-
-(defn bike-step [bikes]
-  (into bikes
-        (for [[k v] bikes]
-          [k (one-bike v)])))
-
-(defn new-bike []
-  {:size (+ 5 (rand-int 23))
-   :dx (* (rand-nth [1 -1])
-          (+ 5 (rand-int 15)))
-   :color (rand-nth ["red" "green" "blue" "gold"])
-   :x (rand-int 500)
-   :y (rand-int 100)})
-
-(defn bikes[]
-  (let [app-state (reagent/atom
-                    {:bikes (zipmap (repeatedly gensym)
-                                    (repeatedly 10 new-bike))})]
-    (fn a-react-to-value-example-component []
-      [:svg
-       {:width 560
-        :height 120}
-       [anim/interval #(swap! app-state update :bikes bike-step) 5000]
-       (for [[k v] (:bikes @app-state)]
-         ^{:key k}
-         [bike-component v])])))
-(defn add-offset
-  [z]
-  (+ z 140))
-
-(defn calc-x
-  [r deg]
-  (add-offset (*  r (Math/cos (* 0.01745 deg)))))
-
-(defn calc-y
-  [r deg]
-  (add-offset (*  r (Math/sin (* 0.01745 deg)))))
-
-
-(defn orbit
-  [{:keys [x y r deg] :as sun-pos}]
-  (do (.log js/console (str "x=" x " y=" y " deg=" deg " r=" r))
-      (let [new-deg (+ deg 10)]
-        (into sun-pos {:x (calc-x r new-deg) :y (calc-y r new-deg) :r r :deg new-deg}))))
 
 (defn sun-cmpt[]
-  (let [sun-pos (reagent/atom {:sun-pos {:x 20 :y 0 :deg 0 :r 140}})
+  (let [sun-pos (reagent/atom {:sun-pos (orbit/orbit {:deg 130 :r 210})})
         x-pos (ratom/reaction (:x (:sun-pos @sun-pos)))
-        x (anim/interpolate-to x-pos {:duration 1000})
+        x (anim/interpolate-to x-pos {:duration 100})
         y-pos (ratom/reaction (:y (:sun-pos @sun-pos)))
-        y (anim/interpolate-to y-pos {:duration 1000})]
+        y (anim/interpolate-to y-pos {:duration 100})]
    (fn create-sun []
       ;;(reset! sun-pos {:x 20 :y 0})
       [:svg
-       {:width 560
-        :height 320}
-       [anim/interval #(swap! sun-pos update :sun-pos orbit) 1000]
+       {:width 600
+        :height 360}
+       [anim/interval #(swap! sun-pos update :sun-pos orbit/orbit) 100]
        [:g
         {:transform (str "translate(" @x " " @y ")")}
         [:circle
-         {:r 30
-          :cx 120 :cy 120
+         {:r 20
+          :cx 0 :cy 0
           :fill "gold"}]]])))
     ;;   [sun-svg]])
 
