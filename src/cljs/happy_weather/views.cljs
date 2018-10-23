@@ -48,6 +48,7 @@
         width (anim/spring size)]
     (fn a-logo-component []
       [:div
+       {:style {:position "absolute" :top "200px" :right "500px"}}
        [anim/interval #(reset! size 100) 300]
        [:img
         {:src "img/cloud-cartoon-med.png"
@@ -70,10 +71,9 @@
         y-pos (ratom/reaction (:y (:sun-pos @sun-pos)))
         y (anim/interpolate-to y-pos {:duration 100})]
    (fn create-sun []
-      ;;(reset! sun-pos {:x 20 :y 0})
       [:svg
-       {:width 600
-        :height 360}
+       {:width 700
+        :height 340}
        [anim/interval #(swap! sun-pos update :sun-pos orbit/orbit) 100]
        [:g
         {:transform (str "translate(" @x " " @y ")")}
@@ -81,21 +81,22 @@
          {:r 20
           :cx 0 :cy 0
           :fill "gold"}]]])))
-    ;;   [sun-svg]])
 
-
-
+(defn horizon[]
+  [:svg
+   {:width 800
+    :height 2}
+   [:g
+    [:line
+      {:x1 0 :y1 0 :x2 700 :y2 0 :style {:stroke "rgb(0,0,0)" :stroke-width "4"}}]]])
 
 (defn main-panel []
   (let [name (re-frame/subscribe [::subs/name])]
     [:div
      [wind-direction]
      [wind-direction-input]
-     [:p]
      [sun-cmpt]
-     ;;[bikes]
-     [:p]
-     [cloud-cartoon]
-     [:p]]))
+     [horizon]
+     [cloud-cartoon]]))
     ;; [get-location-button]
     ;; [location-list]]))
