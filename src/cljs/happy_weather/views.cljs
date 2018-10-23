@@ -48,7 +48,7 @@
         width (anim/spring size)]
     (fn a-logo-component []
       [:div
-       {:style {:position "absolute" :top "200px" :right "500px"}}
+       {:style {:position "absolute" :top "180px" :right "500px"}}
        [anim/interval #(reset! size 100) 300]
        [:img
         {:src "img/cloud-cartoon-med.png"
@@ -90,13 +90,61 @@
     [:line
       {:x1 0 :y1 0 :x2 700 :y2 0 :style {:stroke "rgb(0,0,0)" :stroke-width "4"}}]]])
 
-(defn main-panel []
-  (let [name (re-frame/subscribe [::subs/name])]
+
+(defn slider2 [app-state param value min max]
+  [:input {:type "range" :value value :min min :max max
+           :style {:width "100%"}
+           :on-change (fn [e]
+                        ;;(swap! app-state assoc param (.. e -target -value))
+                        (swap! app-state assoc :day 400))}])
+
+
+
+(defn time-control []
+  (let [app-state (reagent/atom {:day 200})
+        day (:day @app-state)]
     [:div
+      "Day: " (int day)
+      [slider2 app-state :day day 1 600]]))
+
+
+(def bmi-data (reagent/atom {:height 180 :weight 80}))
+
+(defn calc-bmi []
+  (let [{:keys [height weight bmi] :as data} @bmi-data
+        h (/ height 100)]
+    (if (nil? bmi)
+      (assoc data :bmi (/ weight (* h h)))
+      (assoc data :weight (* bmi h h)))))
+
+(defn slider [param value min max]
+  [:input {:type "range" :value value :min min :max max
+           :style {:width "100%"}
+           :on-change (fn [e]
+                        (swap! bmi-data assoc param (.. e -target -value))
+                        (when (not= param :bmi)
+                          (swap! bmi-data assoc :bmi nil)))}])
+
+
+
+
+
+(defn main-panel []
+  (let [name (re-frame/subscribe [::subs/name])
+        {:keys [weight height bmi]} (calc-bmi)]
+
+
      [wind-direction]
      [wind-direction-input]
-     [sun-cmpt]
+    ;; [sun-cmpt]
      [horizon]
-     [cloud-cartoon]]))
+    ;; [cloud-cartoon]
+    ;; [time-control]
     ;; [get-location-button]
     ;; [location-list]]))
+
+     [:div
+      [:h3 "BMI calculator"]
+      [:div
+       "Height: " (int height) "cm"
+       [slider :height height 100 220]]]))
