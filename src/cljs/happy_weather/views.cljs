@@ -91,10 +91,6 @@
     [:line
       {:x1 0 :y1 0 :x2 700 :y2 0 :style {:stroke "rgb(0,0,0)" :stroke-width "4"}}]]])
 
-(def time-data (reagent/atom {:day 3}))
-
-(defn get-day []
-  (:day @time-data))
 
 
 (defn time-status [app-state]
@@ -104,38 +100,27 @@
     [:div
       [:p "current-time=" (date-utils/format-date current-time) "; Offset hours=" offset-hours]]))
 
-(defn slider-orig [param value min max]
-  [:input {:type "range" :value value :min min :max max
-           :style {:width "100%"}
-           :on-change (fn [e]
-                         (swap! time-data assoc param (.. e -target -value)))}])
-
-(defn slider [param min max]
+(defn slider [min max]
   [:input {:type "range" :min min :max max
            :style {:width "100%"}
-           :value (:offset-hours @(re-frame/subscribe [::subs/timer]))
+           :value (:offset-px @(re-frame/subscribe [::subs/timer]))
            :on-change #(re-frame/dispatch [:timer-change (-> % .-target .-value)])}])
 
 
 (defn time-control []
-;;  (let [app-state (reagent/atom {:day 200})
-  ;;      day (:day @app-state)
     [:div
-    ;;  "Current Time: " (date-utils/current-time)
-      [slider  :day 1 600]])
+      [slider 1 600]])
 
 
 
 (defn main-panel []
-  (let [{:keys [day]} (get-day)]
     [:div
-
       [wind-direction]
       [wind-direction-input]
       [time-status]
       ;;[sun-cmpt]
       ;;[horizon]
       [cloud-cartoon]
-      [time-control]]))
+      [time-control]])
     ;; [get-location-button]
     ;; [location-list]]))

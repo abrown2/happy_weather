@@ -4,7 +4,8 @@
    [day8.re-frame.http-fx :as http]
    [happy-weather.db :as db]
    [ajax.core :as ajax]
-   [happy-weather.date-utils :as date-utils]))
+   [happy-weather.date-utils :as date-utils]
+   [happy-weather.config :as config]))
 
 (re-frame/reg-event-db
  ::initialize-db
@@ -16,17 +17,23 @@
   (fn [db [_ new-wind-direction]]
     (assoc db :wind-direction new-wind-direction)))
 
+(defn hours-from-px
+  [px]
+  (/ px (:px-per-hour config/view-config)))
+
 (defn update-timer
   [{:keys [start-time] :as timer} new-offset]
-  (let [new-timer (update timer :current-time #(date-utils/add-hours %2 %3)  start-time new-offset)]
-    (update new-timer :offset-hours #(identity %2) new-offset)))
+  (let [updated-values {:current-time (date-utils/add-hours start-time (hours-from-px new-offset))
+                        :offset-px new-offset
+                        :offset-hours (hours-from-px new-offset)}]
+    (merge timer updated-values)))
 
 
 (re-frame/reg-event-db
   :timer-change
-  (fn [db [_ new-offset]]
+  (fn [db [_ new-val]]
      (let [timer (:timer db)]
-       (assoc db :timer (update-timer timer new-offset)))))
+       (assoc db :timer (update-timer timer new-val)))))
 
 (re-frame/reg-event-fx
   :location-retrieve
