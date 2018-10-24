@@ -66,22 +66,24 @@
 
 
 (defn sun-cmpt[]
-  (let [sun-pos (reagent/atom {:sun-pos (orbit/orbit {:deg 130 :r 210})})
+
+  (let [sun-pos (reagent/atom {:sun-pos (orbit/orbit {:deg 130 :r 210} 30)})
         x-pos (ratom/reaction (:x (:sun-pos @sun-pos)))
         x (anim/interpolate-to x-pos {:duration 100})
         y-pos (ratom/reaction (:y (:sun-pos @sun-pos)))
         y (anim/interpolate-to y-pos {:duration 100})]
+
    (fn create-sun []
-      [:svg
-       {:width 700
-        :height 340}
-       [anim/interval #(swap! sun-pos update :sun-pos orbit/orbit) 100]
-       [:g
-        {:transform (str "translate(" @x " " @y ")")}
-        [:circle
-         {:r 20
-          :cx 0 :cy 0
-          :fill "gold"}]]])))
+        [:svg
+         {:width 700
+          :height 340}
+         [anim/interval #(swap! sun-pos update :sun-pos orbit/update-orbit) 100]
+         [:g
+          {:transform (str "translate(" @x " " @y ")")}
+          [:circle
+           {:r 20
+            :cx 0 :cy 0
+            :fill "gold"}]]])))
 
 (defn horizon[]
   [:svg
@@ -118,9 +120,10 @@
       [wind-direction]
       [wind-direction-input]
       [time-status]
-      ;;[sun-cmpt]
-      ;;[horizon]
-      [cloud-cartoon]
-      [time-control]])
+      [time-control]
+      [sun-cmpt]
+      [horizon]
+      [cloud-cartoon]])
+
     ;; [get-location-button]
     ;; [location-list]]))
