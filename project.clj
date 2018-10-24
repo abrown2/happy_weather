@@ -9,8 +9,8 @@
                  [cljsjs/spin "2.3.2-0"]
                  [lein-cljsbuild "1.1.7"]
                  [cljsjs/react-pose "1.6.4-0"]
-                 [reanimated "0.6.1"]]
-
+                 [reanimated "0.6.1"]
+                 [com.andrewmcveigh/cljs-time "0.5.2"]]
 
 
   :plugins [[lein-cljsbuild "1.1.7"]]

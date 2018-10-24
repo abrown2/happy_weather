@@ -4,6 +4,7 @@
    [reagent.core :as reagent]
    [happy-weather.subs :as subs]
    [happy-weather.orbit :as orbit]
+   [happy-weather.date-utils :as date-utils]
    [cljsjs.spin :as spin]
    [cljsjs.react :as react]
    [cljsjs.react.dom :as r-dom]
@@ -95,55 +96,46 @@
 (defn get-day []
   (:day @time-data))
 
-(defn slider2 [param value min max]
+
+(defn time-status [app-state]
+  (let [timer (re-frame/subscribe [::subs/timer])
+        current-time (:current-time @timer)
+        offset-hours (:offset-hours @timer)]
+    [:div
+      [:p "current-time=" (date-utils/format-date current-time) "; Offset hours=" offset-hours]]))
+
+(defn slider-orig [param value min max]
   [:input {:type "range" :value value :min min :max max
            :style {:width "100%"}
            :on-change (fn [e]
                          (swap! time-data assoc param (.. e -target -value)))}])
+
+(defn slider [param min max]
+  [:input {:type "range" :min min :max max
+           :style {:width "100%"}
+           :value (:offset-hours @(re-frame/subscribe [::subs/timer]))
+           :on-change #(re-frame/dispatch [:timer-change (-> % .-target .-value)])}])
 
 
 (defn time-control []
 ;;  (let [app-state (reagent/atom {:day 200})
   ;;      day (:day @app-state)
     [:div
-      "Day: " (int (get-day))
-      [slider2  :day (get-day) 1 600]])
+    ;;  "Current Time: " (date-utils/current-time)
+      [slider  :day 1 600]])
 
-
-(def bmi-data (reagent/atom {:height 180 :weight 80}))
-
-(defn calc-bmi []
-  (let [{:keys [height weight bmi] :as data} @bmi-data
-        h (/ height 100)]
-    (if (nil? bmi)
-      (assoc data :bmi (/ weight (* h h)))
-      (assoc data :weight (* bmi h h)))))
-
-
-(defn slider [param value min max]
-  [:input {:type "range" :value value :min min :max max
-           :style {:width "100%"}
-           :on-change (fn [e]
-                        (swap! bmi-data assoc param (.. e -target -value)))}])
 
 
 (defn main-panel []
-  (let [name (re-frame/subscribe [::subs/name])
-        {:keys [weight height bmi]} (calc-bmi)
-        {:keys [day]} (get-day)]
+  (let [{:keys [day]} (get-day)]
     [:div
 
       [wind-direction]
       [wind-direction-input]
-    ;; [sun-cmpt]
-      [horizon]
-    ;; [cloud-cartoon]
-      [time-control]
+      [time-status]
+      ;;[sun-cmpt]
+      ;;[horizon]
+      [cloud-cartoon]
+      [time-control]]))
     ;; [get-location-button]
     ;; [location-list]]))
-
-  ;;  [:div
-      [:h3 "BMI calculator"]
-      [:div
-       "Height: " (int height) "cm"
-       [slider :height height 100 220]]]))

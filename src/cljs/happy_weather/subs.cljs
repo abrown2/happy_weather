@@ -3,11 +3,6 @@
    [re-frame.core :as re-frame]))
 
 (re-frame/reg-sub
- ::name
- (fn [db]
-   (:name db)))
-
-(re-frame/reg-sub
   ::wind-direction
   (fn [db]
     (:wind-direction db)))
@@ -16,3 +11,8 @@
   ::locations
   (fn [db]
     (:locations db)))
+
+(re-frame/reg-sub
+  ::timer
+  (fn [db]
+    (:timer db)))
