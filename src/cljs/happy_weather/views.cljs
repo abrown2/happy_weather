@@ -69,15 +69,15 @@
 
   (let [sun-pos (reagent/atom {:sun-pos (orbit/orbit {:deg 130 :r 210} 30)})
         x-pos (ratom/reaction (:x (:sun-pos @sun-pos)))
-        x (anim/interpolate-to x-pos {:duration 100})
+        x (anim/interpolate-to x-pos {:duration 500})
         y-pos (ratom/reaction (:y (:sun-pos @sun-pos)))
-        y (anim/interpolate-to y-pos {:duration 100})]
+        y (anim/interpolate-to y-pos {:duration 500})]
 
    (fn create-sun []
         [:svg
          {:width 700
           :height 340}
-         [anim/interval #(swap! sun-pos update :sun-pos orbit/update-orbit) 100]
+         [anim/interval #(swap! sun-pos update :sun-pos orbit/update-orbit) 500]
          [:g
           {:transform (str "translate(" @x " " @y ")")}
           [:circle
@@ -113,7 +113,14 @@
     [:div
       [slider 1 600]])
 
+(defn increment-time []
+   (let [timer (re-frame/subscribe [::subs/timer])
+         offset-px (:offset-px @timer)]
+      (do (.log js/console (str "old-offset=" offset-px))
+          (+ offset-px 5))))
 
+(defn clockon []
+      (js/setInterval #(re-frame/dispatch [:timer-change (increment-time)]) 500))
 
 (defn main-panel []
     [:div

@@ -33,7 +33,8 @@
   :timer-change
   (fn [db [_ new-val]]
      (let [timer (:timer db)]
-       (assoc db :timer (update-timer timer new-val)))))
+       (do (.log js/console (str "new val=" new-val))
+           (assoc db :timer (update-timer timer new-val))))))
 
 (re-frame/reg-event-fx
   :location-retrieve
