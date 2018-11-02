@@ -13,6 +13,11 @@
     (:locations db)))
 
 (re-frame/reg-sub
+  ::forecast
+  (fn [db]
+    (:forecast db)))
+
+(re-frame/reg-sub
   ::timer
   (fn [db]
     (:timer db)))

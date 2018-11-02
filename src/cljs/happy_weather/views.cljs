@@ -40,6 +40,17 @@
       [:li#loc-list "id: " (:id location) "; name:" (:name location)])]))
 
 
+(defn get-forecast-button
+  []
+  [:div
+   [:button {:on-click  #(re-frame/dispatch [:forecast-retrieve])}  ;; get data from the server !!
+           "Get Ricky Forecast"]])
+
+(defn forecast-raw []
+  (let [forecast  @(re-frame/subscribe [::subs/forecast])]
+    [:div "Forecast: " forecast]))
+
+
 (defn cloud-cartoon []
   (let [tilt (reagent/atom 0)
         rotation (anim/spring tilt)
@@ -126,11 +137,13 @@
     [:div
       [wind-direction]
       [wind-direction-input]
-      [time-status]
-      [time-control]
-      [sun-cmpt]
+      [get-forecast-button]
+      [forecast-raw]
+    ;;  [time-status]
+    ;;  [time-control]
+    ;;  [sun-cmpt]
       [horizon]
-      [cloud-cartoon]])
+    ;;  [cloud-cartoon]])
 
-    ;; [get-location-button]
-    ;; [location-list]]))
+      [get-location-button]
+      [location-list]])

@@ -48,7 +48,25 @@
                   :on-success      [:handle-location-retrieve-success]
                   :on-failure      [:handle-location-retrieve-failure]}}))
 
+(re-frame/reg-event-fx
+  :forecast-retrieve
+  (fn [{:keys [db]} _]
+    {:db   (assoc db :show-twirly true)   ;; causes the twirly-waiting-dialog to show??
+     :http-xhrio {:method          :get
+                  :uri             "http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/353207?"
+                  :params          {:key "aeb6de8c-b9b7-4a94-a990-d0124810511a" :res "3hourly"}
+                  :timeout         8000
+                  :response-format (ajax/json-response-format {:keywords? true})
+                  :on-success      [:handle-forecast-retrieve-success]
+                  :on-failure      [:handle-forecast-retrieve-failure]}}))
+
+
 (re-frame/reg-event-db
   :handle-location-retrieve-success
   (fn [db [_ response]]
     (assoc db :locations (:Locations response))))
+
+(re-frame/reg-event-db
+  :handle-forecast-retrieve-success
+  (fn [db [_ response]]
+    (assoc db :forecast (:SiteRep response))))
