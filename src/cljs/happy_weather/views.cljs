@@ -50,14 +50,14 @@
   (let [date (:value day-report)
         reports (:Rep day-report)]
 ;;    (map #(into {} {(str date (:$ %)) %}) reports)))
-      (map #(conj {:date date} %) reports)))
+       (map #(conj {:date (date-utils/parse-and-add-offset date (:$ %))} %) reports)))
 
 (defn format-forecast [raw-forecast]
    (apply concat (map create-3hr-forcast-data (:Period raw-forecast))))
 
 (defn forecast-raw []
   (let [forecast  @(re-frame/subscribe [::subs/forecast])]
-    [:div "Forecast: " (first (format-forecast forecast))]))
+    [:div "Forecast: " (first (format-forecast forecast)) (last (format-forecast forecast))]))
 
 
 (defn cloud-cartoon []
