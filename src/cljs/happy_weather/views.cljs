@@ -46,9 +46,18 @@
    [:button {:on-click  #(re-frame/dispatch [:forecast-retrieve])}  ;; get data from the server !!
            "Get Ricky Forecast"]])
 
+(defn create-3hr-forcast-data [day-report]
+  (let [date (:value day-report)
+        reports (:Rep day-report)]
+;;    (map #(into {} {(str date (:$ %)) %}) reports)))
+      (map #(conj {:date date} %) reports)))
+
+(defn format-forecast [raw-forecast]
+   (apply concat (map create-3hr-forcast-data (:Period raw-forecast))))
+
 (defn forecast-raw []
   (let [forecast  @(re-frame/subscribe [::subs/forecast])]
-    [:div "Forecast: " forecast]))
+    [:div "Forecast: " (first (format-forecast forecast))]))
 
 
 (defn cloud-cartoon []

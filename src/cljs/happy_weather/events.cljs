@@ -69,4 +69,4 @@
 (re-frame/reg-event-db
   :handle-forecast-retrieve-success
   (fn [db [_ response]]
-    (assoc db :forecast (:SiteRep response))))
+    (assoc db :forecast (:Location (:DV (:SiteRep response))))))
