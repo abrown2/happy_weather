@@ -50,8 +50,8 @@
 
 
 (defn forecast-raw []
-  (let [forecast-slices  @(re-frame/subscribe [::subs/forecast-slices])]
-    [:div "Forecast: " (first forecast-slices) (last forecast-slices)]))
+  (let [forecast-slice  @(re-frame/subscribe [::subs/target-slice])]
+    [:div "Forecast: "  forecast-slice]))
 
 
 (defn cloud-cartoon []
@@ -107,8 +107,6 @@
     [:line
       {:x1 0 :y1 0 :x2 700 :y2 0 :style {:stroke "rgb(0,0,0)" :stroke-width "4"}}]]])
 
-
-
 (defn time-status [app-state]
   (let [timer (re-frame/subscribe [::subs/timer])
         current-time (:current-time @timer)
@@ -130,7 +128,7 @@
 (defn increment-time []
    (let [timer (re-frame/subscribe [::subs/timer])
          offset-px (:offset-px @timer)]
-      (do (.log js/console (str "old-offset=" offset-px))
+      (do ;;(.log js/console (str "old-offset=" offset-px))
           (+ offset-px 5))))
 
 (defn clockon []
@@ -142,8 +140,8 @@
       [wind-direction-input]
       [get-forecast-button]
       [forecast-raw]
-    ;;  [time-status]
-    ;;  [time-control]
+      [time-status]
+      [time-control]
     ;;  [sun-cmpt]
       [horizon]
     ;;  [cloud-cartoon]])

@@ -12,3 +12,7 @@
 
 (defn format-forecast [raw-forecast]
     (create-forecast-slices raw-forecast))
+
+(defn get-target-slice [db timer]
+  (let [forecast-slices (:forecast-slices db)]
+     (first forecast-slices)))

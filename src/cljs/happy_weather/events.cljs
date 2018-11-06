@@ -33,9 +33,13 @@
 (re-frame/reg-event-db
   :timer-change
   (fn [db [_ new-val]]
-     (let [timer (:timer db)]
-       (do (.log js/console (str "new val=" new-val))
-           (assoc db :timer (update-timer timer new-val))))))
+     (let [timer (:timer db)
+           new-timer (update-timer timer new-val)]
+       (do
+         (.log js/console "hello")
+         (assoc db :timer new-timer)))))
+          ;; (.log js/console "hello")))))
+          ;; (assoc db :forecast-target (forecast/get-target-slice db new-timer))))))
 
 (re-frame/reg-event-fx
   :location-retrieve
