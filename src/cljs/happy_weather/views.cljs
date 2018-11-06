@@ -5,6 +5,7 @@
    [happy-weather.subs :as subs]
    [happy-weather.orbit :as orbit]
    [happy-weather.date-utils :as date-utils]
+   [happy-weather.forecast :as forecast]
    [cljsjs.spin :as spin]
    [cljsjs.react :as react]
    [cljsjs.react.dom :as r-dom]
@@ -46,18 +47,11 @@
    [:button {:on-click  #(re-frame/dispatch [:forecast-retrieve])}  ;; get data from the server !!
            "Get Ricky Forecast"]])
 
-(defn create-3hr-forcast-data [day-report]
-  (let [date (:value day-report)
-        reports (:Rep day-report)]
-;;    (map #(into {} {(str date (:$ %)) %}) reports)))
-       (map #(conj {:date (date-utils/parse-and-add-offset date (:$ %))} %) reports)))
 
-(defn format-forecast [raw-forecast]
-   (apply concat (map create-3hr-forcast-data (:Period raw-forecast))))
 
 (defn forecast-raw []
-  (let [forecast  @(re-frame/subscribe [::subs/forecast])]
-    [:div "Forecast: " (first (format-forecast forecast)) (last (format-forecast forecast))]))
+  (let [forecast-slices  @(re-frame/subscribe [::subs/forecast-slices])]
+    [:div "Forecast: " (first forecast-slices) (last forecast-slices)]))
 
 
 (defn cloud-cartoon []

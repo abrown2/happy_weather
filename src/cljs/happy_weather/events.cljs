@@ -5,7 +5,8 @@
    [happy-weather.db :as db]
    [ajax.core :as ajax]
    [happy-weather.date-utils :as date-utils]
-   [happy-weather.config :as config]))
+   [happy-weather.config :as config]
+   [happy-weather.forecast :as forecast]))
 
 (re-frame/reg-event-db
  ::initialize-db
@@ -39,8 +40,7 @@
 (re-frame/reg-event-fx
   :location-retrieve
   (fn [{:keys [db]} _]
-    {:db   (assoc db :show-twirly true)   ;; causes the twirly-waiting-dialog to show??
-     :http-xhrio {:method          :get
+    {:http-xhrio {:method          :get
                   :uri             "http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/sitelist?"
                   :params          {:key "aeb6de8c-b9b7-4a94-a990-d0124810511a"}
                   :timeout         8000
@@ -51,8 +51,7 @@
 (re-frame/reg-event-fx
   :forecast-retrieve
   (fn [{:keys [db]} _]
-    {:db   (assoc db :show-twirly true)   ;; causes the twirly-waiting-dialog to show??
-     :http-xhrio {:method          :get
+    {:http-xhrio {:method          :get
                   :uri             "http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/353207?"
                   :params          {:key "aeb6de8c-b9b7-4a94-a990-d0124810511a" :res "3hourly"}
                   :timeout         8000
@@ -69,4 +68,4 @@
 (re-frame/reg-event-db
   :handle-forecast-retrieve-success
   (fn [db [_ response]]
-    (assoc db :forecast (:Location (:DV (:SiteRep response))))))
+    (assoc db :forecast-slices (forecast/create-forecast-slices (:Location (:DV (:SiteRep response)))))))

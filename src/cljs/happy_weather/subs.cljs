@@ -13,9 +13,9 @@
     (:locations db)))
 
 (re-frame/reg-sub
-  ::forecast
+  ::forecast-slices
   (fn [db]
-    (:forecast db)))
+    (:forecast-slices db)))
 
 (re-frame/reg-sub
   ::timer
