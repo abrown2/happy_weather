@@ -50,8 +50,8 @@
 
 
 (defn forecast-raw []
-  (let [forecast-slice  @(re-frame/subscribe [::subs/target-slice])]
-    [:div "Forecast: "  forecast-slice]))
+  (let [target-slice  @(re-frame/subscribe [::subs/target-slice])]
+    [:div "Forecast: "  target-slice]))
 
 
 (defn cloud-cartoon []

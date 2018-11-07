@@ -23,8 +23,8 @@
   [date offset-mins]
   (time/plus (parse-date date) (time/minutes offset-mins)))
 
-(def default-start-time (time/date-time 2018 11 01 12 00 00))
-(def default-end-time (time/date-time 2018 11 05 9 00 00))
+(def default-start-time (time/date-time 2018 11 07 12 00 00))
+(def default-end-time (time/date-time 2018 11 11 9 00 00))
 
 (defn add-hours
   [time hours]

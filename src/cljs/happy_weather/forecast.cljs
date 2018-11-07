@@ -1,6 +1,9 @@
 (ns happy-weather.forecast
   (:require
-   [happy-weather.date-utils :as date-utils]))
+   [happy-weather.date-utils :as date-utils]
+   [re-frame.core :as re-frame]
+   [happy-weather.subs :as subs]
+   [cljs-time.core :as time]))
 
 (defn create-3hr-forcast-data [day-report]
   (let [date (:value day-report)
@@ -13,6 +16,6 @@
 (defn format-forecast [raw-forecast]
     (create-forecast-slices raw-forecast))
 
-(defn get-target-slice [db timer]
-  (let [forecast-slices (:forecast-slices db)]
-     (first forecast-slices)))
+(defn get-target-slice
+  [{:keys [forecast-slices] } {:keys [current-time]}]
+  (first (filter #(time/before? current-time (:date %)) forecast-slices)))
