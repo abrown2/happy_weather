@@ -134,17 +134,23 @@
 (defn clockon []
       (js/setInterval #(re-frame/dispatch [:timer-change (increment-time)]) 500))
 
+(defn temperature
+  []
+  [:div
+     [:p "temp="  (:T @(re-frame/subscribe [::subs/target-slice]))]])
+
+
 (defn main-panel []
     [:div
       [wind-direction]
       [wind-direction-input]
       [get-forecast-button]
-      [forecast-raw]
+    ;;  [forecast-raw]
       [time-status]
       [time-control]
-    ;;  [sun-cmpt]
+      [sun-cmpt]
       [horizon]
-    ;;  [cloud-cartoon]])
-
+      [cloud-cartoon]
+      [temperature]
       [get-location-button]
       [location-list]])

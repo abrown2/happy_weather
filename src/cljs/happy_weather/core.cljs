@@ -16,8 +16,9 @@
 (defn mount-root []
   (re-frame/clear-subscription-cache!)
   (reagent/render [views/main-panel]
-                  (.getElementById js/document "app")))
-;;(views/clockon))
+                  (.getElementById js/document "app"))
+  (re-frame/dispatch [:forecast-retrieve])
+  (views/clockon))
 
 (defn ^:export init []
   (re-frame/dispatch-sync [::events/initialize-db])

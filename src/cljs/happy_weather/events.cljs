@@ -24,10 +24,19 @@
 
 (defn update-timer
   [{:keys [start-time] :as timer} new-offset]
-  (let [updated-values {:current-time (date-utils/add-hours start-time (hours-from-px new-offset))
+  (let [ new-offset (mod new-offset 560)
+        updated-values {:current-time (date-utils/add-hours start-time (hours-from-px new-offset))
                         :offset-px new-offset
                         :offset-hours (hours-from-px new-offset)}]
     (merge timer updated-values)))
+
+(defn reset-timer
+  [slices]
+  {:offset-px 0
+               :offset-hours 0
+               :start-time (:date (first slices))
+               :current-time (:date (first slices))
+               :end-time (:date (last slices))})
 
 
 (re-frame/reg-event-db
@@ -69,4 +78,7 @@
 (re-frame/reg-event-db
   :handle-forecast-retrieve-success
   (fn [db [_ response]]
-    (assoc db :forecast-slices (forecast/create-forecast-slices (:Location (:DV (:SiteRep response)))))))
+    (let [slices (forecast/create-forecast-slices (:Location (:DV (:SiteRep response))))]
+      ( -> db
+        (assoc :forecast-slices slices)
+        (assoc :timer (reset-timer slices))))))

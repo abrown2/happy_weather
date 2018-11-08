@@ -24,7 +24,7 @@
 (defn orbit
   [{:keys [x y r deg] :as sun-pos} offset-hours]
 ;;   {:keys [offset-hours] :as timer}]
-  (let [new-deg (* offset-hours 15)]
+  (let [new-deg (* (+ offset-hours 8) 15)]
      (do (.log js/console (str "new-deg=" new-deg))
          (into sun-pos {:x (calc-x r new-deg) :y (calc-y r new-deg) :r r :deg new-deg}))))
 
@@ -33,6 +33,6 @@
   [{:keys [x y r deg] :as sun-pos} offset-hours]
   (let [timer (re-frame/subscribe [::subs/timer])
         offset-hours (:offset-hours @timer)
-        new-deg (* offset-hours 15)]
+        new-deg (mod (+ 250 (* offset-hours 15)) 360)]
      (do (.log js/console (str "new-deg=" new-deg))
          (into sun-pos {:x (calc-x r new-deg) :y (calc-y r new-deg) :r r :deg new-deg}))))
