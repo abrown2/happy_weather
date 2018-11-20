@@ -125,6 +125,8 @@
     [:div
       [slider 1 600]])
 
+(def isPlay (reagent/atom false))
+
 (defn increment-time []
    (let [timer (re-frame/subscribe [::subs/timer])
          offset-px (:offset-px @timer)]
@@ -132,7 +134,14 @@
           (+ offset-px 5))))
 
 (defn clockon []
-      (js/setInterval #(re-frame/dispatch [:timer-change (increment-time)]) 500))
+      (js/setInterval #(if @isPlay (re-frame/dispatch [:timer-change (increment-time)])) 500))
+
+(defn play-pause-button
+  []
+  [:div
+   [:p
+    [:button {:on-click  #(reset! isPlay (false? @isPlay))}  ;; get data from the server !!
+           "Play/pause"]]])
 
 (defn temperature
   []
@@ -145,6 +154,7 @@
       [wind-direction]
       [wind-direction-input]
       [get-forecast-button]
+      [play-pause-button]
     ;;  [forecast-raw]
       [time-status]
       [time-control]
