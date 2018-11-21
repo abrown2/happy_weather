@@ -21,19 +21,6 @@
            "Get Locations"]])
 
 
-(defn wind-direction [app-state]
-  (let [wind-direction (re-frame/subscribe [::subs/wind-direction])]
-    [:div
-      [:p "wind-direction=" @wind-direction]]))
-
-(defn wind-direction-input
-  []
-  [:div.wind-direction-input
-   "Enter new wind direction: "
-   [:input {:type "text"
-            :value @(re-frame/subscribe [::subs/wind-direction])
-            :on-change #(re-frame/dispatch [:wind-direction-change (-> % .-target .-value)])}]])
-
 (defn location-list []
   (let [locations  @(re-frame/subscribe [::subs/locations])]
     [:ul#loc-list
@@ -151,16 +138,16 @@
 
 (defn main-panel []
     [:div
-      [wind-direction]
-      [wind-direction-input]
-      [get-forecast-button]
-      [play-pause-button]
+    ;;  [get-forecast-button]
+    ;;  [sun-cmpt]
+    ;;  [horizon]
     ;;  [forecast-raw]
+    
       [time-status]
-      [time-control]
-      [sun-cmpt]
-      [horizon]
-      [cloud-cartoon]
       [temperature]
-      [get-location-button]
-      [location-list]])
+      [time-control]
+      [play-pause-button]])
+
+    ;;  [cloud-cartoon]])
+    ;;  [get-location-button]
+  ;;    [location-list]])
