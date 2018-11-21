@@ -27,3 +27,8 @@
   ::timer
   (fn [db]
     (:timer db)))
+
+(re-frame/reg-sub
+  ::play-animation?
+  (fn [db]
+    (:play-animation? db)))

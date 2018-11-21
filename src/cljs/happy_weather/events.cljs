@@ -82,3 +82,10 @@
       ( -> db
         (assoc :forecast-slices slices)
         (assoc :timer (reset-timer slices))))))
+
+
+(re-frame/reg-event-db
+  :handle-animation-play-change
+  (fn [{:keys [:play-animation?] :as db} [_]]
+     (do (.log js/console "hello")
+         (assoc db :play-animation? (false? play-animation?)))))

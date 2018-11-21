@@ -114,6 +114,13 @@
 
 (def isPlay (reagent/atom false))
 
+(def playLocked? (reagent/atom false))
+(defn setTimeoutLock
+  [lock]
+  (do (reset! lock true)
+      (js/setTimeout #(reset! lock false) 20)))
+
+
 (defn increment-time []
    (let [timer (re-frame/subscribe [::subs/timer])
          offset-px (:offset-px @timer)]
@@ -127,8 +134,12 @@
   []
   [:div
    [:p
-    [:button {:on-click  #(reset! isPlay (false? @isPlay))}  ;; get data from the server !!
-           "Play/pause"]]])
+     [:button {:on-click  (if (true? @playLocked?)
+                            (do (setTimeoutLock playLocked?)
+                                (re-frame/dispatch [:handle-animation-play-change])))}  ;; toggle play animation
+        (if @(re-frame/subscribe [::subs/play-animation?]) "||" ">")]]])
+
+
 
 (defn temperature
   []
@@ -142,8 +153,8 @@
     ;;  [sun-cmpt]
     ;;  [horizon]
     ;;  [forecast-raw]
-    
-      [time-status]
+
+    ;;  [time-status]
       [temperature]
       [time-control]
       [play-pause-button]])
