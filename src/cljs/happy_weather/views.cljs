@@ -125,11 +125,10 @@
 (defn play-pause-button
   []
   (let [play-animation? @(re-frame/subscribe [::subs/play-animation?])]
-   [:div
-     [:p
-       [:button {:on-click #(re-frame/dispatch [:handle-animation-play-change])
-                 :class "play_button"}
-         (if play-animation?  ">" "||")]]]))
+   [:div]
+   [:button {:on-click #(re-frame/dispatch [:handle-animation-play-change])
+             :class "play_button"}
+     (if play-animation?  ">" "||")]))
 
 
 (defn temperature
