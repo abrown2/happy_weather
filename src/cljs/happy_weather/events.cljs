@@ -86,6 +86,5 @@
 
 (re-frame/reg-event-db
   :handle-animation-play-change
-  (fn [{:keys [:play-animation?] :as db} [_]]
-     (do (.log js/console "hello")
-         (assoc db :play-animation? (false? play-animation?)))))
+  (fn [{:keys [:play-animation?] :as db}]
+    (assoc db :play-animation? (false? play-animation?))))  ;;toggle play/pause

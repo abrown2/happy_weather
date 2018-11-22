@@ -8,7 +8,7 @@
   {:name "re-frame"
    :wind-direction 110
    :locations {:Location [{:elevation "50.0" :id "14" :latitude "54.9375" :longitude "-2.8092" :name "Carlisle Airport" :region "nw" :unitaryAuthArea "Cumbria"}]}
-   :play-animation? (reagent/atom false)
+   :play-animation? false
    :timer {:start-time date-utils/default-start-time
            :end-time date-utils/default-end-time
            :offset-px 0

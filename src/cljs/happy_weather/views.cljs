@@ -112,14 +112,6 @@
     [:div
       [slider 1 600]])
 
-(def isPlay (reagent/atom false))
-
-(def playLocked? (reagent/atom false))
-(defn setTimeoutLock
-  [lock]
-  (do (reset! lock true)
-      (js/setTimeout #(reset! lock false) 20)))
-
 
 (defn increment-time []
    (let [timer (re-frame/subscribe [::subs/timer])
@@ -128,17 +120,16 @@
           (+ offset-px 5))))
 
 (defn clockon []
-      (js/setInterval #(if @isPlay (re-frame/dispatch [:timer-change (increment-time)])) 500))
+      (js/setInterval #(if @(re-frame/subscribe [::subs/play-animation?]) (re-frame/dispatch [:timer-change (increment-time)])) 500))
 
 (defn play-pause-button
   []
-  [:div
-   [:p
-     [:button {:on-click  (if (true? @playLocked?)
-                            (do (setTimeoutLock playLocked?)
-                                (re-frame/dispatch [:handle-animation-play-change])))}  ;; toggle play animation
-        (if @(re-frame/subscribe [::subs/play-animation?]) "||" ">")]]])
-
+  (let [play-animation? @(re-frame/subscribe [::subs/play-animation?])]
+   [:div
+     [:p
+       [:button {:on-click #(re-frame/dispatch [:handle-animation-play-change])
+                 :class "play_button"}
+         (if play-animation?  ">" "||")]]]))
 
 
 (defn temperature
@@ -154,7 +145,7 @@
     ;;  [horizon]
     ;;  [forecast-raw]
 
-    ;;  [time-status]
+      [time-status]
       [temperature]
       [time-control]
       [play-pause-button]])
