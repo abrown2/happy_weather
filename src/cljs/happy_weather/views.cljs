@@ -127,14 +127,27 @@
   (let [play-animation? @(re-frame/subscribe [::subs/play-animation?])]
    [:div]
    [:button {:on-click #(re-frame/dispatch [:handle-animation-play-change])
-             :class "play_button"}
-     (if play-animation?  ">" "||")]))
+             :class (if play-animation? "play-button" "play-button paused")}]))
+    ;; (if play-animation?  ">" "||")]))
 
+(defn temperature-to-class
+  [temp]
+  (cond
+     (< temp 0) "temp-very-cold"
+     (< temp 5) "temp-cold"
+     (< temp 10) "temp-quite-cold"
+     (< temp 15) "temp-cool"
+     (< temp 20) "temp-mild"
+     (< temp 25) "temp-warm"
+     (< temp 25) "temp-hot"
+     (< temp 25) "temp-very-hot"
+     :else "temp-roasting"))
 
 (defn temperature
   []
-  [:div
-     [:p "temp="  (:T @(re-frame/subscribe [::subs/target-slice]))]])
+  (let [temperature (:T @(re-frame/subscribe [::subs/target-slice]))]
+    [:div {:class (temperature-to-class temperature)}
+      [:p "temp="  temperature]]))
 
 
 (defn main-panel []
