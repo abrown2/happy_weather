@@ -68,3 +68,28 @@ body {
 .hidden {
 	display: none;
 }
+
+.temp-very-cold {
+	background-color: #4575b4
+}
+.temp-cold {
+	background-color: #74add1
+}
+.temp-chilly {
+	background-color: #abd9e9
+}
+.temp-cool {
+	background-color: #e0f3f8
+}
+.temp-mild{
+	background-color: #fee090
+}
+.temp-warm {
+	background-color: #fdae61
+}
+.temp-hot {
+	background-color: #f46d43
+}
+.temp-very-hot {
+	background-color: #d73027
+}

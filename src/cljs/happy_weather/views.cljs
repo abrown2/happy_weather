@@ -135,13 +135,12 @@
   (cond
      (< temp 0) "temp-very-cold"
      (< temp 5) "temp-cold"
-     (< temp 10) "temp-quite-cold"
+     (< temp 10) "temp-chilly"
      (< temp 15) "temp-cool"
      (< temp 20) "temp-mild"
      (< temp 25) "temp-warm"
-     (< temp 25) "temp-hot"
-     (< temp 25) "temp-very-hot"
-     :else "temp-roasting"))
+     (< temp 30) "temp-hot"
+     :else "temp-very-hot"))
 
 (defn temperature
   []
