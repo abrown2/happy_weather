@@ -142,11 +142,29 @@
      (< temp 30) "temp-hot"
      :else "temp-very-hot"))
 
+(defn precip-prob-to-class
+       [pp]
+       (cond
+          (< pp 5) "pp-dry"
+          (< pp 20) "pp-low"
+          (< pp 50) "pp-moderate"
+          (< pp 80) "pp-high"
+          :else "pp-very-high"))
+
+
+
 (defn temperature
   []
-  (let [temperature (:T @(re-frame/subscribe [::subs/target-slice]))]
+  (let [temperature (:T @(re-frame/subscribe [::subs/target-slice]))
+        temp-feels-like (:F @(re-frame/subscribe [::subs/target-slice]))]
     [:div {:class (str "temperature "  (temperature-to-class temperature))}
-     temperature]))
+     (str temperature "/" temp-feels-like)]))
+
+(defn precipitation
+  []
+  (let [probability (:Pp @(re-frame/subscribe [::subs/target-slice]))]
+    [:div {:class (precip-prob-to-class temperature)}
+     "Rainfall probability=" probability]))
 
 
 (defn main-panel []
@@ -158,6 +176,7 @@
 
       [time-status]
       [temperature]
+      [precipitation]
       [time-control]
       [play-pause-button]])
 
