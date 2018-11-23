@@ -145,8 +145,8 @@
 (defn temperature
   []
   (let [temperature (:T @(re-frame/subscribe [::subs/target-slice]))]
-    [:div {:class (temperature-to-class temperature)}
-      [:p "temp="  temperature]]))
+    [:div {:class (str "temperature "  (temperature-to-class temperature))}
+     temperature]))
 
 
 (defn main-panel []

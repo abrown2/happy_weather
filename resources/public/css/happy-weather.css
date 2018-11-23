@@ -69,6 +69,17 @@ body {
 	display: none;
 }
 
+.temperature {
+	border-radius: 10%;
+	width: 50px;
+	height: 50px;
+	padding: 15px 10px 5px 5px;
+	color: Green;
+  font: bold 35px/33px Helvetica, Verdana, Tahoma;
+  text-align: center;
+	/* width and height can be anything, as long as they're equal */
+}
+
 .temp-very-cold {
 	background-color: #4575b4
 }
