@@ -69,6 +69,9 @@
                   :on-success      [:handle-forecast-retrieve-success]
                   :on-failure      [:handle-forecast-retrieve-failure]}}))
 
+;;https://www.metoffice.gov.uk/public/data/services/location-search/v1/rickmansworth/?max=10&filter=nonmarine-offshore
+;;https://www.metoffice.gov.uk/public/data/services/locations/v2/353207
+;;https://api.sunrise-sunset.org/json?lat=36.7201600&lng=-4.4203400
 
 (re-frame/reg-event-db
   :handle-location-retrieve-success
