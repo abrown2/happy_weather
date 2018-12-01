@@ -112,12 +112,19 @@
     [:div
       [slider 1 600]])
 
+(defn time-labels []
+  [:svg  {:width 700
+          :height 80}
+   [:g
+     [:text {:class "time-labels" :x 0 :y 20}
+       "|  hello my loverlies   |"]
+     [:text {:class "time-labels" :x 120 :y 20}
+         "    hello my loverlies   |"]]])
 
 (defn increment-time []
    (let [timer (re-frame/subscribe [::subs/timer])
          offset-px (:offset-px @timer)]
-      (do ;;(.log js/console (str "old-offset=" offset-px))
-          (+ offset-px 5))))
+        (+ offset-px 5)))
 
 (defn clockon []
       (js/setInterval #(if @(re-frame/subscribe [::subs/play-animation?]) (re-frame/dispatch [:timer-change (increment-time)])) 500))
@@ -127,8 +134,7 @@
   (let [play-animation? @(re-frame/subscribe [::subs/play-animation?])]
    [:div]
    [:button {:on-click #(re-frame/dispatch [:handle-animation-play-change])
-             :class (if play-animation? "play-button" "play-button paused")}]))
-    ;; (if play-animation?  ">" "||")]))
+             :class (if play-animation?  "play-button paused"  "play-button")}]))
 
 (defn temperature-to-class
   [temp]
@@ -158,7 +164,7 @@
   (let [temperature (:T @(re-frame/subscribe [::subs/target-slice]))
         temp-feels-like (:F @(re-frame/subscribe [::subs/target-slice]))]
     [:div {:class (str "temperature "  (temperature-to-class temperature))}
-     (str temperature "/" temp-feels-like)]))
+     (str temperature \u00B0 "C " "(feel like " temp-feels-like  \u00B0 "C)")]))
 
 (defn precipitation
   []
@@ -178,6 +184,7 @@
       [temperature]
       [precipitation]
       [time-control]
+      [time-labels]
       [play-pause-button]])
 
     ;;  [cloud-cartoon]])

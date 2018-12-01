@@ -70,37 +70,41 @@ body {
 }
 
 .temperature {
-	border-radius: 10%;
-	width: 50px;
+	border-radius: 2%;
+	width: 250px;
 	height: 50px;
 	padding: 15px 10px 5px 5px;
 	color: Green;
-  font: bold 35px/33px Helvetica, Verdana, Tahoma;
+  font: bold 23px/25px Helvetica, Verdana, Tahoma;
   text-align: center;
 	/* width and height can be anything, as long as they're equal */
 }
 
 .temp-very-cold {
-	background-color: #4575b4
+	background-color: #4575b4;
 }
 .temp-cold {
-	background-color: #74add1
+	background-color: #74add1;
 }
 .temp-chilly {
-	background-color: #abd9e9
+	background-color: #abd9e9;
 }
 .temp-cool {
-	background-color: #e0f3f8
+	background-color: #e0f3f8;
 }
 .temp-mild{
-	background-color: #fee090
+	background-color: #fee090;
 }
 .temp-warm {
-	background-color: #fdae61
+	background-color: #fdae61;
 }
 .temp-hot {
-	background-color: #f46d43
+	background-color: #f46d43;
 }
 .temp-very-hot {
-	background-color: #d73027
+	background-color: #d73027;
+}
+
+.time-labels {
+	color: green;
 }
