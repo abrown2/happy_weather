@@ -103,23 +103,20 @@
 
 (defn slider [min max]
   [:input {:type "range" :min min :max max
+           :class "slider"
            :style {:width "100%"}
            :value (:offset-px @(re-frame/subscribe [::subs/timer]))
            :on-change #(re-frame/dispatch [:timer-change (-> % .-target .-value)])}])
 
 
+
 (defn time-control []
     [:div
-      [slider 1 600]])
+      [slider 1 600]
+      [:div {:class "slider-tick tick-1"} "1st"]
+      [:div {:class "slider-tick tick-2"} "2nd"]
+      [:div {:class "slider-tick tick-3"} "3rd"]])
 
-(defn time-labels []
-  [:svg  {:width 700
-          :height 80}
-   [:g
-     [:text {:class "time-labels" :x 0 :y 20}
-       "|  hello my loverlies   |"]
-     [:text {:class "time-labels" :x 120 :y 20}
-         "    hello my loverlies   |"]]])
 
 (defn increment-time []
    (let [timer (re-frame/subscribe [::subs/timer])
@@ -132,9 +129,9 @@
 (defn play-pause-button
   []
   (let [play-animation? @(re-frame/subscribe [::subs/play-animation?])]
-   [:div]
-   [:button {:on-click #(re-frame/dispatch [:handle-animation-play-change])
-             :class (if play-animation?  "play-button paused"  "play-button")}]))
+   [:div {:class "play-button-group"}
+     [:button {:on-click #(re-frame/dispatch [:handle-animation-play-change])
+               :class (if play-animation?  "play-button paused"  "play-button")}]]))
 
 (defn temperature-to-class
   [temp]
@@ -164,7 +161,7 @@
   (let [temperature (:T @(re-frame/subscribe [::subs/target-slice]))
         temp-feels-like (:F @(re-frame/subscribe [::subs/target-slice]))]
     [:div {:class (str "temperature "  (temperature-to-class temperature))}
-     (str temperature \u00B0 "C " "(feel like " temp-feels-like  \u00B0 "C)")]))
+     (str temperature \u00B0 "C " "(feels like " temp-feels-like  \u00B0 "C)")]))
 
 (defn precipitation
   []
@@ -184,7 +181,7 @@
       [temperature]
       [precipitation]
       [time-control]
-      [time-labels]
+;;[time-labels]
       [play-pause-button]])
 
     ;;  [cloud-cartoon]])
