@@ -113,9 +113,14 @@
 (defn time-control []
     [:div
       [slider 1 600]
-      [:div {:class "slider-tick tick-1"} "1st"]
-      [:div {:class "slider-tick tick-2"} "2nd"]
-      [:div {:class "slider-tick tick-3"} "3rd"]])
+      [:div {:class "slider-scale"}
+        [:div {:class "slider-tick tick-1"} "1st"]
+        [:div {:class "slider-tick tick-2"} "2nd"]
+        [:div {:class "slider-tick tick-3"} "3rd"]
+        [:div {:class "slider-tick tick-4"} "4th"]
+        [:div {:class "slider-tick tick-5"} "5th"]]])
+
+
 
 
 (defn increment-time []

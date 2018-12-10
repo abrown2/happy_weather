@@ -109,6 +109,11 @@ input[type=range]:focus::-ms-fill-upper {
   background: #367ebd;
 }
 
+.slider-scale {
+  position: absolute;
+  left: -50px;
+}
+
 .slider-tick {
   border: 0;
   background: transparent;
@@ -117,9 +122,9 @@ input[type=range]:focus::-ms-fill-upper {
   text-align: center;
   width: 200px;
   height: 20px;
-  border-color: transparent transparent transparent #0d0d0d;
+  border-color: transparent  #0d0d0d transparent transparent;
   border-style: solid;
-  border-width: 0px 0 0px 2px;
+  border-width: 0px 2px 0px 0px;
 }
 
 .tick-1 {
@@ -135,4 +140,15 @@ input[type=range]:focus::-ms-fill-upper {
 .tick-3 {
   position: absolute;
   left: 520px;
+}
+
+.tick-4 {
+  position: absolute;
+  left: 720px;
+}
+
+.tick-5 {
+  position: absolute;
+  left: 920px;
+  border-width: 0px 0px 0px 0px;
 }
