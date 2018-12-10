@@ -129,7 +129,8 @@
         (+ offset-px 5)))
 
 (defn clockon []
-      (js/setInterval #(if @(re-frame/subscribe [::subs/play-animation?]) (re-frame/dispatch [:timer-change (increment-time)])) 500))
+      (js/setInterval #(if (and @(re-frame/subscribe [::subs/play-animation?])  (.hasFocus js/document))
+                          (re-frame/dispatch [:timer-change (increment-time)])) 500))
 
 (defn play-pause-button
   []
@@ -178,8 +179,8 @@
 (defn main-panel []
     [:div
     ;;  [get-forecast-button]
-    ;;  [sun-cmpt]
-    ;;  [horizon]
+      [sun-cmpt]
+      [horizon]
     ;;  [forecast-raw]
 
       [time-status]
