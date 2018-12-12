@@ -97,12 +97,14 @@
 (defn time-status [app-state]
   (let [timer (re-frame/subscribe [::subs/timer])
         current-time (:current-time @timer)
-        offset-hours (:offset-hours @timer)]
+        offset-hours (:offset-hours @timer)
+        range-hours (:range-hours @timer)]
     [:div
-      [:p "current-time=" (date-utils/format-date current-time) "; Offset hours=" offset-hours]]))
+      [:p "current-time=" (date-utils/format-date current-time) "; Offset hours=" offset-hours
+         "; range-hours" range-hours]]))
 
-(defn slider [min max]
-  [:input {:type "range" :min min :max max
+(defn slider []
+  [:input {:type "range" :min 1 :max (:width-px @(re-frame/subscribe [::subs/timer]))
            :class "slider"
            :style {:width "100%"}
            :value (:offset-px @(re-frame/subscribe [::subs/timer]))
@@ -112,7 +114,7 @@
 
 (defn time-control []
     [:div
-      [slider 1 600]
+      [slider]
       [:div {:class "slider-scale"}
         [:div {:class "slider-tick tick-1"} "1st"]
         [:div {:class "slider-tick tick-2"} "2nd"]
@@ -179,8 +181,8 @@
 (defn main-panel []
     [:div
     ;;  [get-forecast-button]
-      [sun-cmpt]
-      [horizon]
+    ;;  [sun-cmpt]
+  ;;    [horizon]
     ;;  [forecast-raw]
 
       [time-status]

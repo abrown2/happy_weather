@@ -11,6 +11,7 @@
    :play-animation? false
    :timer {:start-time date-utils/default-start-time
            :end-time date-utils/default-end-time
+           :width-px 600
            :offset-px 0
            :offset-hours 0
            :current-time (date-utils/add-hours date-utils/default-start-time 5)}})

@@ -32,11 +32,15 @@
 
 (defn reset-timer
   [slices]
-  {:offset-px 0
-               :offset-hours 0
-               :start-time (:date (first slices))
-               :current-time (:date (first slices))
-               :end-time (:date (last slices))})
+  (let [start-time (:date (first slices))
+        end-time   (:date (last slices))]
+    {:offset-px 0
+     :offset-hours 0
+     :width-px 600
+     :start-time start-time
+     :current-time start-time
+     :end-time end-time
+     :range-hours (date-utils/interval-hours start-time end-time)}))
 
 
 (re-frame/reg-event-db
