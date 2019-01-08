@@ -104,9 +104,9 @@
          "; range-hours" range-hours]]))
 
 (defn slider []
-  [:input {:type "range" :min 1 :max (:width-px @(re-frame/subscribe [::subs/timer]))
+  [:input {:type "range" :min 1 :max 1200
            :class "slider"
-           :style {:width "100%"}
+           :style {:width (str (* 8 (:range-hours @(re-frame/subscribe [::subs/timer]))) "px")}
            :value (:offset-px @(re-frame/subscribe [::subs/timer]))
            :on-change #(re-frame/dispatch [:timer-change (-> % .-target .-value)])}])
 

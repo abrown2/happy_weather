@@ -1,6 +1,6 @@
 input[type=range] {
   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
-  width: 100%; /* Specific width is required for Firefox. */
+/*  width: 100%; */ /* Specific width is required for Firefox. */
   background: transparent; /* Otherwise white in Chrome */
 }
 
@@ -111,7 +111,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 .slider-scale {
   position: absolute;
-  left: -50px;
+  left: 0px;
 }
 
 .slider-tick {
